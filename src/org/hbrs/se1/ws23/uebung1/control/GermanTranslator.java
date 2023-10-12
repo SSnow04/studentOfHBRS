@@ -11,26 +11,30 @@ public class GermanTranslator implements Translator {
 	 */
 	public String translateNumber( int number ) {
 		// [ihr Source Code aus Übung 1-2]
-		String message= "";
+		String ErrorMessage = "";
 		String[] Nums = {"eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun","zehn"};
 		try {
 			 return Nums[number - 1];
 		} catch (ArrayIndexOutOfBoundsException e){
 			printInfo();
-			message = "Übersetzung der Zahl "+ number +" nicht " + "möglich " + "Translator version: " +
+			ErrorMessage = "Übersetzung der Zahl "+ number +" nicht " + "möglich " + "Translator version: " +
 					  this.version ;
 		}
-		return message;
+		return ErrorMessage;
+	}
+
+	private void Date(){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM/yyyy");
+		Date currentDate = new Date();
+		String Datum = dateFormat.format(currentDate);
+		setDate(Datum);
 	}
 
 	/**
 	 * Objektmethode der Klasse GermanTranslator zur Ausgabe einer Info.
 	 */
 	public void printInfo(){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM/yyyy");
-		Date currentDate = new Date();
-		String Datum = dateFormat.format(currentDate);
-		setDate(Datum);
+		Date();
 		System.out.println( "GermanTranslator v1.9, erzeugt am " + this.date );
 	}
 

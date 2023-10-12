@@ -11,25 +11,28 @@ class GermanTranslatorTest {
         assertEquals(value, "eins");
         value = translator.translateNumber(10);
         assertEquals(value, "zehn");
+        value = translator.translateNumber(5);
+        assertEquals(value, "fünf");
     }
     @Test
     void aNegativeTest() {
         GermanTranslator translator = new GermanTranslator();
+        double TranslatorVersion = translator.version;
         String value = translator.translateNumber(-5);
         assertEquals(value, "Übersetzung der Zahl "+ -5 +" nicht " + "möglich " +
-                "Translator version: "+ translator.version);
+                "Translator version: "+ TranslatorVersion);
         value = translator.translateNumber(-1);
         assertEquals(value, "Übersetzung der Zahl "+ -1 +" nicht " + "möglich " +
-                "Translator version: "+ translator.version);
+                "Translator version: "+ TranslatorVersion);
         value = translator.translateNumber(11);
         assertEquals(value, "Übersetzung der Zahl "+ 11 +" nicht " + "möglich " +
-                "Translator version: "+ translator.version);
+                "Translator version: "+ TranslatorVersion);
         value = translator.translateNumber(20);
         assertEquals(value, "Übersetzung der Zahl "+ 20 +" nicht " + "möglich " +
-                "Translator version: "+ translator.version);
+                "Translator version: "+ TranslatorVersion);
     }
     @Test
-    void grenzwert() {
+    void grenzwertTest() {
         GermanTranslator translator = new GermanTranslator();
         String value = translator.translateNumber(0);
         assertEquals(value, "Übersetzung der Zahl "+ 0 +" nicht " + "möglich " +
