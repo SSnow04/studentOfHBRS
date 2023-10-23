@@ -7,10 +7,8 @@ public class Container {
         for (Member mem:memList) {
             if (mem.getID().equals(member.getID())) {
                 throw new ContainerException(
-                        """
-                                Das Member-Objekt mit der ID [hier die ID des Objekts]
-                                ist bereits vorhanden!
-                                """);
+                                "Das Member-Objekt mit der ID " + mem.getID() +
+                                " ist bereits vorhanden!");
             }
         }
         memList.add(member);
