@@ -1,12 +1,11 @@
 package org.hbrs.se1.ws23.uebung2;
-import org.hbrs.se1.ws23.uebung3.persistence.PersistenceException;
-import org.hbrs.se1.ws23.uebung3.persistence.PersistenceStrategyStream;
-import java.io.*;
+import org.hbrs.se1.ws23.uebung3.persistence.*;
+
 import java.util.*;
 
 public class Container {
     private static Container container;
-    private PersistenceStrategyStream<Member> stream = new PersistenceStrategyStream<>();
+    private PersistenceStrategy<Member> psMem;
     private ArrayList<Member> memList = new ArrayList<>();
 
     //private Container wegen Singelton Patten
@@ -17,6 +16,10 @@ public class Container {
             container = new Container();
 
         return container;
+    }
+
+    public List<Member> getCurrentList(){
+        return memList;
     }
 
     public void addMember( Member member ) throws ContainerException{
@@ -43,24 +46,21 @@ public class Container {
         return "Es gibt keinen Member mit diesem ID, ID = " + id;
     }
 
-    public  void dump(){
-        for (Member mem: memList) {
-            System.out.println(mem);
-        }
-
-    }
-
     public int size(){
         return memList.size();
     }
 
+    public void setPersistenceStrategy(PersistenceStrategy p){
+        psMem = p;
+    }
     public void store() throws PersistenceException {
-        stream.save(memList);
+        psMem.save(memList);
     }
 
     public void load() throws PersistenceException {
-        stream.load();
+        psMem.load();
     }
+
 
 
 }

@@ -36,10 +36,10 @@ class ContainerTest {
         assertEquals(c.size(),4);
         c.deleteMember(mem1.getID());
         assertEquals(c.size(),3);
-        c.dump();
+        MemberView.dump(c.getCurrentList());
         c.deleteMember(mem3.getID());
         assertEquals(c.size(),2);
-        c.dump();
+        MemberView.dump(c.getCurrentList());
         System.out.println();
     }
 
@@ -50,7 +50,7 @@ class ContainerTest {
         c.addMember(mem2);
         c.addMember(mem3);
         c.addMember(mem4);
-        c.dump();
+        MemberView.dump(c.getCurrentList());
         System.out.println();
     }
 
