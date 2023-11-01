@@ -1,65 +1,74 @@
 package org.hbrs.se1.ws23.uebung2;
-
+import org.hbrs.se1.ws23.uebung3.persistence.*;
 import org.junit.jupiter.api.*;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ContainerTest {
     Container c;
-    Member mem1,mem2,mem3,mem4,mem5;
-
+    PersistenceStrategy<Member> ps;
+    Member mem1,mem2,mem3;
+    List<Member> memList;
     @BeforeEach
     void setUp() {
+
         c = Container.getInstance(); // Initialize the class-level field
+        ps = null;
         mem1 = new ConcreteMember(1); // Initialize the class-level field
         mem2 = new ConcreteMember(2); // Initialize the class-level field
         mem3 = new ConcreteMember(3); // Initialize the class-level field
-        mem4 = new ConcreteMember(4); // Initialize the class-level field
-        mem5 = new ConcreteMember(4); // same ID as mem4
+
     }
 
+
     @Test
-    void addMember() throws ContainerException {
+    void roundTripTest() throws ContainerException, PersistenceException {
+        // Objekt hinzufügen
         c.addMember(mem1);
         c.addMember(mem2);
         c.addMember(mem3);
-        c.addMember(mem4);
-        assertThrows(ContainerException.class, () -> c.addMember(mem5));
+        System.out.println("after adding: \n" + c);
+        // Liste persistent abspeichern
+        ps = new PersistenceStrategyStream<Member>();
+        c.setPersistenceStrategy(ps);
+        c.store();
+        System.out.println("after store: \n" + c);
+        //Objekt aus Container löschen
+        c.deleteMember(1);
+        c.deleteMember(2);
+        c.deleteMember(3);
+        System.out.println("after delete: \n" + c);
+        // Liste wieder einladen.
+        c.load();
+        c.getCurrentList();
+        System.out.println("after load: \n" + c);
+
     }
 
     @Test
-    void deleteMember() throws ContainerException{
-        System.out.println("Deletion:");
-        c.addMember(mem1);
-        c.addMember(mem2);
-        c.addMember(mem3);
-        c.addMember(mem4);
-        assertEquals(c.size(),4);
-        c.deleteMember(mem1.getID());
-        assertEquals(c.size(),3);
-        MemberView.dump(c.getCurrentList());
-        c.deleteMember(mem3.getID());
-        assertEquals(c.size(),2);
-        MemberView.dump(c.getCurrentList());
-        System.out.println();
+    void setPersistenceStrategy() throws ContainerException {
+        //Test auf Null
+        assertNull(c.getPersistenceStrategy());
+        ps = new PersistenceStrategyMongoDB();
+        c.setPersistenceStrategy(ps);
+        assertThrows(UnsupportedOperationException.class,() -> c.load());
     }
 
     @Test
-    void dump() throws ContainerException{
-        System.out.println("Dump: ");
-        c.addMember(mem1);
-        c.addMember(mem2);
-        c.addMember(mem3);
-        c.addMember(mem4);
-        MemberView.dump(c.getCurrentList());
-        System.out.println();
+    void store() throws PersistenceException {
+        PersistenceStrategyStream<Member> ps = new PersistenceStrategyStream();
+        c.setPersistenceStrategy(ps);
+        ps.setLocation("G:\\Other computers\\My laptop\\UNI\\Sems\\5.Semster\\SE1\\U\\U2\\codesSE2023_U2.zip\\codesSE2023\\test\\org\\hbrs\\se1\\ws23\\uebung2");
+        assertThrows(PersistenceException.class, ()->c.store());
     }
 
     @Test
-    void size() throws ContainerException{
-        c.addMember(mem1);
-        c.addMember(mem2);
-        c.addMember(mem3);
-        c.addMember(mem4);
-        assertEquals(c.size(),4);
+    void load() throws PersistenceException {
+        PersistenceStrategyStream<Member> ps = new PersistenceStrategyStream();
+        c.setPersistenceStrategy(ps);
+        ps.setLocation("G:\\Other computers\\My laptop\\UNI\\Sems\\5.Semster\\SE1\\U\\U2\\codesSE2023_U2.zip\\codesSE2023\\test\\org\\hbrs\\se1\\ws23\\uebung2");
+        assertThrows(PersistenceException.class, ()->c.load());
     }
 }

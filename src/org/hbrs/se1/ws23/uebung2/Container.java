@@ -12,12 +12,14 @@ public class Container {
     private Container(){}
 
     public static Container getInstance(){
-        if(container == null)
-            container = new Container();
+        if(container == null){
+            synchronized (Container.class) {
+                container = new Container();
+            }
+        }
 
         return container;
     }
-
     public List<Member> getCurrentList(){
         return memList;
     }
@@ -50,8 +52,12 @@ public class Container {
         return memList.size();
     }
 
-    public void setPersistenceStrategy(PersistenceStrategy p){
+    public void setPersistenceStrategy(PersistenceStrategy<Member> p){
         psMem = p;
+    }
+
+    public PersistenceStrategy<Member> getPersistenceStrategy() {
+        return psMem;
     }
     public void store() throws PersistenceException {
         psMem.save(memList);
@@ -61,6 +67,13 @@ public class Container {
         psMem.load();
     }
 
+    @Override
+    public String toString() {
+        return "Container{" +
+                "psMem=" + psMem +
+                ", memList=" + memList +
+                '}';
+    }
 
 
 }

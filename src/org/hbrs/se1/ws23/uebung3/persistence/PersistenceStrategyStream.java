@@ -8,8 +8,18 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
     private ObjectInputStream OIS;
     private ObjectOutputStream OOS;
 
+    File tempFile;
+
+    {
+        try {
+            tempFile = File.createTempFile("objects", ".ser");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // URL of file, in which the objects are stored
-    private String location = "objects.ser";
+    private String location = tempFile.getPath();
 
     // Backdoor method used only for testing purposes,
     // if the location should be changed in a Unit-Test
@@ -100,9 +110,12 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
         // Tipp: Use a directory (ends with "/") to implement a negative test case ;-)
         // Reading and extracting the list (try - catch ommitted here)
 
-        Object obj;
+        Object obj = null;
         try {
-            obj = OIS.readObject();
+            int available = OIS.available();
+            if(available > 0) {
+                obj = OIS.readObject();
+            }
         } catch (IOException e) {
             throw new PersistenceException(PersistenceException.ExceptionType.NoStrategyIsSet,"Object has no Strategy");
         } catch (ClassNotFoundException e) {
