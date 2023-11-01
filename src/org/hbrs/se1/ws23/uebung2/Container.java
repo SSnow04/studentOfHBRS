@@ -1,10 +1,12 @@
 package org.hbrs.se1.ws23.uebung2;
 import org.hbrs.se1.ws23.uebung3.persistence.PersistenceException;
-
+import org.hbrs.se1.ws23.uebung3.persistence.PersistenceStrategyStream;
+import java.io.*;
 import java.util.*;
 
 public class Container {
     private static Container container;
+    private PersistenceStrategyStream<Member> stream = new PersistenceStrategyStream<>();
     private ArrayList<Member> memList = new ArrayList<>();
 
     //private Container wegen Singelton Patten
@@ -53,11 +55,11 @@ public class Container {
     }
 
     public void store() throws PersistenceException {
-
+        stream.save(memList);
     }
 
     public void load() throws PersistenceException {
-
+        stream.load();
     }
 
 
