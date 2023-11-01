@@ -9,7 +9,7 @@ class ContainerTest {
 
     @BeforeEach
     void setUp() {
-        c = new Container(); // Initialize the class-level field
+        c = Container.getInstance(); // Initialize the class-level field
         mem1 = new ConcreteMember(1); // Initialize the class-level field
         mem2 = new ConcreteMember(2); // Initialize the class-level field
         mem3 = new ConcreteMember(3); // Initialize the class-level field

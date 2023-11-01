@@ -1,7 +1,21 @@
 package org.hbrs.se1.ws23.uebung2;
+import org.hbrs.se1.ws23.uebung3.persistence.PersistenceException;
+
 import java.util.*;
+
 public class Container {
-    private ArrayList <Member> memList = new ArrayList<Member>();
+    private static Container container;
+    private ArrayList<Member> memList = new ArrayList<>();
+
+    //private Container wegen Singelton Patten
+    private Container(){}
+
+    public static Container getInstance(){
+        if(container == null)
+            container = new Container();
+
+        return container;
+    }
 
     public void addMember( Member member ) throws ContainerException{
         for (Member mem:memList) {
@@ -36,6 +50,14 @@ public class Container {
 
     public int size(){
         return memList.size();
+    }
+
+    public void store() throws PersistenceException {
+
+    }
+
+    public void load() throws PersistenceException {
+
     }
 
 
