@@ -6,7 +6,7 @@ public class MemberView {
     public void dump(){
         List<Member> List = c.getListe();
         for (Member mem: List) {
-                System.out.println(mem);
+            System.out.println(mem);
         }
     }
 }

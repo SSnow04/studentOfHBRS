@@ -123,9 +123,9 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
             FIS = new FileInputStream(location);
             OIS = new ObjectInputStream(FIS);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable, "Error opening stream");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable, "Error opening stream");
         }
 
 

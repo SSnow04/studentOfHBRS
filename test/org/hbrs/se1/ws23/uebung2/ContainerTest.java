@@ -1,8 +1,7 @@
 package org.hbrs.se1.ws23.uebung2;
 import org.hbrs.se1.ws23.uebung3.persistence.*;
 import org.junit.jupiter.api.*;
-
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,13 +12,11 @@ class ContainerTest {
     List<Member> memList;
     @BeforeEach
     void setUp() {
-
         c = Container.getInstance(); // Initialize the class-level field
         ps = null;
         mem1 = new ConcreteMember(1); // Initialize the class-level field
         mem2 = new ConcreteMember(2); // Initialize the class-level field
         mem3 = new ConcreteMember(3); // Initialize the class-level field
-
     }
 
 
@@ -50,7 +47,10 @@ class ContainerTest {
     @Test
     void setPersistenceStrategy() throws ContainerException {
         //Test auf Null
+        c.setPersistenceStrategy(null);
         assertNull(c.getPersistenceStrategy());
+
+        //Test auf MongoDB
         ps = new PersistenceStrategyMongoDB();
         c.setPersistenceStrategy(ps);
         assertThrows(UnsupportedOperationException.class,() -> c.load());

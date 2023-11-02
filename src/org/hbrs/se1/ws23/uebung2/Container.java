@@ -28,7 +28,7 @@ public class Container {
         for (Member mem:memList) {
             if (mem.getID().equals(member.getID())) {
                 throw new ContainerException(
-                                "Das Member-Objekt mit der ID " + mem.getID() +
+                        "Das Member-Objekt mit der ID " + mem.getID() +
                                 " ist bereits vorhanden!");
             }
         }
@@ -38,7 +38,7 @@ public class Container {
     public String deleteMember( Integer id ) {
 
         for (Member mem: memList
-             ) {
+        ) {
             if (mem.getID().equals(id)){
                 memList.remove(mem);
                 return "Der Member mit dem ID = " + id + "wurde entfernt.";
