@@ -64,7 +64,7 @@ public class Container {
     }
 
     public void load() throws PersistenceException {
-        psMem.load();
+        memList = (ArrayList<Member>) psMem.load();
     }
 
     @Override

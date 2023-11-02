@@ -40,13 +40,19 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
             // Open input stream
             FIS = new FileInputStream(location);
             OIS = new ObjectInputStream(FIS);
-
-            // Open output stream
-            FOS = new FileOutputStream(location);
-            OOS = new ObjectOutputStream(FOS);
-
+        } catch (FileNotFoundException e) {
+            throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable, "Error opening stream");
         } catch (IOException e) {
             throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable, "Error opening stream");
+        }
+
+        try {
+            FOS = new FileOutputStream(location);
+            OOS = new ObjectOutputStream(FOS);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -87,9 +93,15 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
      */
     public void save(List<E> member) throws PersistenceException {
         try {
-            openConnection();
+            //openConnection();
+
+            // Open output stream
+            FOS = new FileOutputStream(location);
+            OOS = new ObjectOutputStream(FOS);
+
             OOS.writeObject(member);
-            closeConnection();
+            //closeConnection();
+            OOS.close();
         } catch (IOException e) {
             throw new PersistenceException(PersistenceException.ExceptionType.ImplementationNotAvailable, "Error saving streams");
         }
@@ -105,17 +117,24 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
         List<E> newListe = null;
 
         // Initiating the Stream (can also be moved to method openConnection()... ;-)
-        openConnection();
+        // openConnection();
+        // Open input stream
+        try {
+            FIS = new FileInputStream(location);
+            OIS = new ObjectInputStream(FIS);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         // Tipp: Use a directory (ends with "/") to implement a negative test case ;-)
         // Reading and extracting the list (try - catch ommitted here)
 
         Object obj = null;
         try {
-            int available = OIS.available();
-            if(available > 0) {
-                obj = OIS.readObject();
-            }
+            obj = OIS.readObject();
         } catch (IOException e) {
             throw new PersistenceException(PersistenceException.ExceptionType.NoStrategyIsSet,"Object has no Strategy");
         } catch (ClassNotFoundException e) {

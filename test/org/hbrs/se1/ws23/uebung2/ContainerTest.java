@@ -24,7 +24,7 @@ class ContainerTest {
 
 
     @Test
-    void roundTripTest() throws ContainerException, PersistenceException {
+    void roundTripTest() throws PersistenceException,ContainerException {
         // Objekt hinzufügen
         c.addMember(mem1);
         c.addMember(mem2);
@@ -42,7 +42,7 @@ class ContainerTest {
         System.out.println("after delete: \n" + c);
         // Liste wieder einladen.
         c.load();
-        c.getCurrentList();
+        memList = c.getCurrentList();
         System.out.println("after load: \n" + c);
 
     }
