@@ -87,7 +87,6 @@ public class PersistenceStrategyStream<E> implements PersistenceStrategy<E> {
 
         // Load the objects from stream
         List<E> list = null;
-
         try {
             // Create Streams here instead using "this.openConnection();"
             // Workaround!

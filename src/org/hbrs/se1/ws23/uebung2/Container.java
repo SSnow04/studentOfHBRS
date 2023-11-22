@@ -11,13 +11,11 @@ public class Container {
     //private Container wegen Singelton Patten
     private Container(){}
 
-    public static Container getInstance(){
+    public static synchronized Container getInstance(){
         if(container == null){
-            synchronized (Container.class) {
                 container = new Container();
-            }
+                System.out.println("Objekt vom Typ Container wurde instanziiert!");
         }
-
         return container;
     }
     public List<Member> getCurrentList(){

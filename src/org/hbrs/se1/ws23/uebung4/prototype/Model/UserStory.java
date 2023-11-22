@@ -1,5 +1,9 @@
-package org.hbrs.se1.ws23.uebung4.prototype;
-    public class UserStory {
+package org.hbrs.se1.ws23.uebung4.prototype.Model;
+
+import java.io.Serializable;
+import java.util.NoSuchElementException;
+
+public class UserStory implements Serializable, Comparable<UserStory> {
         // ToDo: Sind die Attribute der Klasse UserStory vollständig? (F4)
 
         String titel;
@@ -19,31 +23,37 @@ package org.hbrs.se1.ws23.uebung4.prototype;
             this.project = project;
         }
 
+        public UserStory(int id, String titel, String akzeptanzkriterium, String projekt, int mehrwert, int strafe,
+                         int aufwand, int risk) {
+            if (mehrwert < 1 || strafe < 1 || aufwand < 1 || risk < 1){
+                throw new NoSuchElementException("Bitte geben Sie einen gültigen Zahl (also >=1 )");
+            }
 
-
-
-        public UserStory(int id, String titel, int mehrwert, int strafe,
-                         int aufwand, int risk, double prio) {
             this.id = id;
             this.titel = titel;
             this.mehrwert = mehrwert;
             this.strafe = strafe;
             this.aufwand = aufwand;
             this.risk = risk;
-            this.prio = prio;
+            this.project = projekt;
+
+            int zaehler = getMehrwert()+getStrafe();
+            int nenner = getAufwand()+getRisk();
+            this.prio = (double) zaehler /nenner;
+
         }
 
         public UserStory() {
         }
 
+        // Berechnung der Prio. Nach der Formel von Gloger:
+
         public double getPrio() {
             return prio;
         }
-
         public void setPrio(double prio) {
             this.prio = prio;
         }
-
         public String getTitel() {
             return titel;
         }
@@ -81,5 +91,10 @@ package org.hbrs.se1.ws23.uebung4.prototype;
             this.strafe = strafe;
         }
 
-     }
+    @Override
+    public int compareTo(UserStory o) {
+        return (int) ( 100*o.getPrio() - 100*this.getPrio());
+    }
+
+}
 

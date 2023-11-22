@@ -123,8 +123,8 @@ public class Container {
 		// Variante 4.1 (mit zwei Filtern und mit foreach als Reduzierung (reduce)):
 		liste.stream() // Parallelisierung hier moeglich mit .parallelstream()
 		      .filter( element -> element.getID() > 20 )
-			  .filter(element -> element.getID() < 1000 )
-			  .forEach(element -> System.out.println(element) );
+			  .filter( element -> element.getID() < 1000 )
+			  .forEach( element -> System.out.println(element) );
 
 		// Variante 4.2 (mit zwei Filtern und einer Reduzierung (reduce) auf eine Liste ohne foreach):		
 		List<Integer> newListe = liste.stream() // Parallelisierung hier moeglich mit .parallelstream()
